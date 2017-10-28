@@ -2,11 +2,27 @@ from curses import wrapper
 import curses
 
 class FacePart:
-	def __init__(self, x, y, buf):
+	def __init__(self, x, y, buf=None, f=None):
 		self.x = x
 		self.y = y
-		self.buf = buf
 		self.children = {} 
+
+		if buf != None:
+			self.buf = buf
+		elif f != None:
+			self.buf = []
+			with open(f) as fp:
+				for line in fp.readlines():
+					if line[0] == "":
+						parts = line.strip().split(" ")
+						name = parts[2]
+						x = int(parts[3])
+						y = int(parts[4])
+						p = FacePart(x, y, f=parts[1])
+						self.children[name] = p
+					else:
+						self.buf += [line[:-1]]
+
 		self.visible = True
 
 	def write(self, scr, xo=0, yo=0):
@@ -33,10 +49,7 @@ def main(stdscr):
 	stdscr.clear()
 	curses.curs_set(False)
 
-	p = FacePart(5, 5, ['###########', '#         #', '# __   __ #', '#    #    #', '#         #', '#  #####  #', '#         #', '###########'])
-	p["l"] = FacePart(2,2,["##"])
-	p["r"] = FacePart(7,2,["##"])
-	p["mouth"] = FacePart(2,4, ["#     #"])
+	p = FacePart(5, 5, f="faceparts/face.txt")
 
 	while True:
 		stdscr.clear()

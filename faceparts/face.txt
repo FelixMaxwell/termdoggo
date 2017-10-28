@@ -1,8 +1,11 @@
-###########
+ faceparts/eye.txt l 2 2
+ faceparts/eye.txt r 7 2
+ faceparts/mouth.txt mouth 2 5 
+/#########\
 #         #
 # __   __ #
 #    #    #
 #         #
 #  #####  #
 #         #
-###########
+\#########/
